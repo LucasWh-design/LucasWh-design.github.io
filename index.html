@@ -95,15 +95,45 @@
     color: var(--text);
   }
 
+  /* --- project cards: whole box is clickable --- */
+
   .project {
     border: 1px solid var(--line);
     background: var(--panel);
     border-radius: 3px;
-    padding: 22px 24px;
+    padding: 0;
     margin-bottom: 16px;
+    overflow: hidden;
   }
 
   .project:last-child { margin-bottom: 0; }
+
+  .project summary {
+    cursor: pointer;
+    list-style: none;
+    display: block;
+    padding: 22px 24px;
+  }
+
+  .project summary:hover {
+    background: rgba(193, 122, 61, 0.06);
+  }
+
+  .project summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .project summary::after {
+    content: "+";
+    float: right;
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--copper);
+    font-size: 1.1rem;
+  }
+
+  .project[open] summary::after {
+    content: "–";
+  }
 
   .project h3 {
     font-family: 'Space Grotesk', sans-serif;
@@ -123,10 +153,29 @@
     margin-bottom: 10px;
   }
 
-  .project p {
+  .project .content {
+    padding: 0 24px 22px;
+  }
+
+  .project .content p {
     margin: 0;
     color: var(--text-dim);
     font-size: 0.96rem;
+  }
+
+  .project .content img {
+    width: 100%;
+    border-radius: 3px;
+    margin-top: 12px;
+    display: block;
+  }
+
+
+
+
+
+  .project .content p:not(:first-child) {
+    margin-top: 12px;
   }
 
   footer {
@@ -168,28 +217,70 @@
     <p>I tinker with DIY electronics and hardware hacking in my spare time — mostly FPV drones and RC systems, ESP32 builds, and repurposing consumer hardware that would otherwise end up in a drawer. This site is a running log of what I'm building.</p>
   </section>
 
-  <section class="projects">
+    <section class="projects">
     <h2><span class="num">02</span> Projects</h2>
 
-    <div class="project">
-      <span class="status">in progress</span>
-      <h3>ESP32 menu system</h3>
-      <p>A scrollable menu driven by an SSD1306 OLED display over I2C, with four momentary push buttons for navigation. Small enough to sit inside almost any enclosure.</p>
-    </div>
+    <details class="project">
+      <summary>
+        <span class="status">in progress</span>
+        <h3>ESP32 menu system</h3>
+      </summary>
+      <div class="content">
+        <p>A scrollable menu driven by an SSD1306 OLED display over I2C, with four momentary push buttons for navigation. Small enough to sit inside almost any enclosure.</p>
+        <p>More detail here — parts list, wiring notes, what you'd change next time, whatever you want to add.</p>
+      </div>
+    </details>
 
-    <div class="project">
-      <span class="status">in progress</span>
-      <h3>MacBook Air display revival</h3>
-      <p>Turning a 2014 MacBook Air's 13" LED panel into a standalone HDMI monitor using an LVDS controller board — currently confirming pinout compatibility before sourcing parts.</p>
-    </div>
+    <details class="project">
+      <summary>
+        <span class="status">in progress</span>
+        <h3>MacBook Air display revival</h3>
+      </summary>
+      <div class="content">
+        <p>Turning a 2014 MacBook Air's 13" LED panel into a standalone HDMI monitor using an LVDS controller board — currently confirming pinout compatibility before sourcing parts.</p>
+        <p>More detail here — parts list, wiring notes, what you'd change next time, whatever you want to add.</p>
+      </div>
+    </details>
 
-    <div class="project">
-      <span class="status">researching</span>
-      <h3>FPV micro drone build</h3>
-      <p>Comparing RC transmitter and receiver options — FlySky FS-i6X versus ELRS setups — and working through flight controller compatibility for a small brushless build.</p>
-    </div>
+    <details class="project">
+      <summary>
+        <span class="status">researching</span>
+        <h3>FPV micro drone build</h3>
+      </summary>
+      <div class="content">
+        <p>Comparing RC transmitter and receiver options — FlySky FS-i6X versus ELRS setups — and working through flight controller compatibility for a small brushless build.</p>
+        <p>More detail here — parts list, wiring notes, what you'd change next time, whatever you want to add.</p>
+      </div>
+    </details>
+
+    <details class="project">
+  <summary>
+    <span class="status">finished</span>
+    <h3>ESP32 camera build</h3>
+  </summary>
+  <div class="content">
+    <p>Cool oldschool camera/camcorder</p>
+    <p>More detail here — parts list, wiring notes, what you'd change next time, whatever you want to add.</p>
+    <img src="images/photo_026.jpg" alt="ESP32 camera build">
+  </div>
+</details>
   </section>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   <footer>
     <p>Want to talk about a build, or point out something I got wrong? Reach out.</p>
     <div class="links">
