@@ -75,6 +75,97 @@
     border-top: 1px solid var(--line);
   }
 
+  .tabs {
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tabs button {
+    padding: 12px 16px;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: var(--text-dim);
+    font: 500 0.95rem 'IBM Plex Mono', monospace;
+    cursor: pointer;
+  }
+
+  .tabs button[aria-selected="true"] {
+    border-bottom-color: var(--copper);
+    color: var(--copper);
+  }
+
+  .tabs button:focus-visible {
+    outline: 2px solid var(--copper);
+    outline-offset: 3px;
+  }
+
+  [hidden] { display: none !important; }
+
+  .timeline-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 40px;
+  }
+
+  .timeline-columns section {
+    min-width: 0;
+    padding: 40px 0;
+  }
+
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 24px;
+    border-left: 1px solid var(--line);
+  }
+
+  .timeline li {
+    position: relative;
+    padding: 0 0 28px 24px;
+  }
+
+  .timeline li:last-child { padding-bottom: 0; }
+
+  .timeline li::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: -30px;
+    width: 11px;
+    height: 11px;
+    border: 2px solid var(--copper);
+    border-radius: 50%;
+    background: var(--bg);
+  }
+
+  .timeline-period {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--copper);
+    font: 0.8rem 'IBM Plex Mono', monospace;
+  }
+
+  .timeline h3 {
+    margin: 0 0 6px;
+    font: 500 1.1rem 'Space Grotesk', sans-serif;
+  }
+
+  .timeline p {
+    margin: 0;
+    color: var(--text-dim);
+  }
+
+  .timeline p + p { margin-top: 8px; }
+
+  .timeline .highlight {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .timeline .highlight strong { color: var(--copper); }
+
   h2 {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 1.5rem;
@@ -201,6 +292,10 @@
   @media (max-width: 560px) {
     header.hero { padding: 64px 0 48px; }
     section { padding: 40px 0; }
+    .timeline-columns {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
   }
 </style>
 </head>
@@ -211,70 +306,108 @@
   <header class="hero">
     <div class="tag">hobbyist / hardware</div>
     <h1>Lucas Whitworth</h1>
-    <p class="role">I build small electronics — flight controllers, microcontroller projects, and things pulled apart to see what's inside.</p>
+    <p class="role">I tinker with DIY electronics and hardware hacking in my spare time — doodads, devices and technology that would otherwise end up in a drawer. This site is a running log of what I'm building and my academic and professional experiences.</p>
   </header>
 
-  <section class="about">
-    <h2><span class="num">01</span> About</h2>
-    <p>I tinker with DIY electronics and hardware hacking in my spare time — mostly FPV drones and RC systems, ESP32 builds, and repurposing consumer hardware that would otherwise end up in a drawer. This site is a running log of what I'm building.</p>
-  </section>
-
-    <section class="projects">
-    <h2><span class="num">02</span> Projects</h2>
-
-    <details class="project">
-      <summary>
-        <span class="status">in development</span>
-        <h3>Personal Website</h3>
-      </summary>
-      <div class="content">
-        <p>Im currently working on this very website!</p>
-        <p>Ive been working on the design and functionality, adding new features and improving the user experience.</p>
-      </div>
-    </details>
-
-
-    <details class="project">
-      <summary>
-        <span class="status">in development</span>
-        <h3>Friendslop game development</h3>
-      </summary>
-      <div class="content">
-        <p>Im currently working on a friendslop game for my friends and I!</p>
-        <p>Ive been learning how to use the unity game development platform to avoid spending £5 on another friendlsop game.</p>
-      </div>
-    </details>
-
-    <details class="project">
-      <summary>
-        <span class="status">in progress</span>
-        <h3>MacBook Air display revival</h3>
-      </summary>
-      <div class="content">
-        <p>Turning a 2014 MacBook Air's 13" LED panel into a standalone HDMI monitor using an LVDS controller board — currently confirming pinout compatibility before sourcing parts.</p>
-        <p>Should be complete soonish but it's really hard to source a compatible controller board.</p>
-      </div>
-    </details>
-
-    
-
-    <details class="project">
-  <summary>
-    <span class="status">finished</span>
-    <h3>ESP32 camera build</h3>
-  </summary>
-  <div class="content">
-    <p>Cool oldschool camera/camcorder.</p>
-    <p>Not the best quality, but it gets the job done for a dev board which cost less than £10.</p>
-    <p>Here are some shots of my friends and I!</p>
-    <img src="images/photo_026.jpg" alt="ESP32 camera build">
-    <img src="images/photo_576.jpg" alt="ESP32 camera build">
-    <img src="images/photo_027.jpg" alt="ESP32 camera build">
-    <img src="images/photo_024.jpg" alt="ESP32 camera build">
-    
+  <div class="tabs" role="tablist" aria-label="Website sections">
+    <button id="tab-personal" type="button" role="tab" aria-controls="panel-personal" aria-selected="true" tabindex="0">Personal</button>
+    <button id="tab-work-school" type="button" role="tab" aria-controls="panel-work-school" aria-selected="false" tabindex="-1">Work / School</button>
   </div>
-</details>
-  </section>
+
+  <div id="panel-personal" role="tabpanel" aria-labelledby="tab-personal" tabindex="0">
+    <section class="projects">
+      <h2><span class="num">01</span> Projects</h2>
+
+      <details class="project">
+        <summary>
+          <span class="status">in development</span>
+          <h3>Personal Website</h3>
+        </summary>
+        <div class="content">
+          <p>Im currently working on this very website!</p>
+          <p>Ive been working on the design and functionality, adding new features and improving the user experience.</p>
+        </div>
+      </details>
+
+      <details class="project">
+        <summary>
+          <span class="status">in progress</span>
+          <h3>MacBook Air display revival</h3>
+        </summary>
+        <div class="content">
+          <p>Turning a 2014 MacBook Air's 13" LED panel into a standalone HDMI monitor using an LVDS controller board — currently confirming pinout compatibility before sourcing parts.</p>
+          <p>Should be complete soonish but it's really hard to source a compatible controller board.</p>
+        </div>
+      </details>
+
+      <details class="project">
+        <summary>
+          <span class="status">finished</span>
+          <h3>ESP32 camera build</h3>
+        </summary>
+        <div class="content">
+          <p>Cool oldschool camera/camcorder.</p>
+          <p>Not the best quality, but it gets the job done for a dev board which cost less than £10.</p>
+          <p>Here are some shots of my friends and I!</p>
+          <img src="images/photo_026.jpg" alt="ESP32 camera build">
+          <img src="images/photo_576.jpg" alt="ESP32 camera build">
+          <img src="images/photo_027.jpg" alt="ESP32 camera build">
+          <img src="images/photo_024.jpg" alt="ESP32 camera build">
+        </div>
+      </details>
+    </section>
+  </div>
+
+  <div id="panel-work-school" role="tabpanel" aria-labelledby="tab-work-school" tabindex="0" hidden>
+    <div class="timeline-columns">
+      <section>
+        <h2><span class="num">01</span> Work experience</h2>
+        <ol class="timeline">
+          <li>
+            <span class="timeline-period">Heriot-Watt University · National Robotarium</span>
+            <h3>Work experience placement</h3>
+          </li>
+          <li>
+            <span class="timeline-period">National Robotarium</span>
+            <h3>VEX IQ competition referee</h3>
+          </li>
+          <li>
+            <span class="timeline-period">One week · Heriot-Watt University · National Robotarium</span>
+            <h3>Second work experience placement</h3>
+          </li>
+        </ol>
+      </section>
+
+      <section>
+        <h2><span class="num">02</span> School &amp; extracurricular</h2>
+        <ol class="timeline">
+          <li>
+            <span class="timeline-period">S1–S3</span>
+            <h3>Broad General Education</h3>
+            <p class="highlight"><strong>First LEGO League:</strong> UK finalist in S3.</p>
+          </li>
+          <li>
+            <span class="timeline-period">S4</span>
+            <h3>National 5 qualifications</h3>
+            <p>Eight A grades: Mathematics, Physics, English, Geography, Spanish, History, Graphic Communication and German.</p>
+            <p class="highlight"><strong>First LEGO League:</strong> UK 2nd place and world finalists in Boston, placing 15th out of 75 teams.</p>
+          </li>
+          <li>
+            <span class="timeline-period">S5</span>
+            <h3>Higher qualifications</h3>
+            <p>Five A grades and one B: A grades in Mathematics, Physics, Geography, Graphic Communication and German; B in English.</p>
+            <p class="highlight"><strong>Robotics coaching:</strong> Coached the next generation of First LEGO League teams at Dunblane High School.</p>
+          </li>
+          <li>
+            <span class="timeline-period">S6 · In progress</span>
+            <h3>Advanced Higher &amp; Higher studies</h3>
+            <p>Advanced Higher Mathematics, Advanced Higher Physics, Higher Engineering and Higher Environmental Science.</p>
+            <p class="highlight"><strong>Robotics coaching:</strong> Coaching more of the next generation of robotics teams.</p>
+          </li>
+        </ol>
+      </section>
+    </div>
+  </div>
 
   
   <footer>
@@ -288,6 +421,34 @@
 
 </div>
 
+<script>
+  const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+
+  function activateTab(tab) {
+    tabs.forEach((currentTab) => {
+      const isSelected = currentTab === tab;
+      currentTab.setAttribute('aria-selected', String(isSelected));
+      currentTab.tabIndex = isSelected ? 0 : -1;
+      document.getElementById(currentTab.getAttribute('aria-controls')).hidden = !isSelected;
+    });
+    tab.focus();
+  }
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => activateTab(tab));
+    tab.addEventListener('keydown', (event) => {
+      let nextIndex;
+      if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+      else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+      else if (event.key === 'Home') nextIndex = 0;
+      else if (event.key === 'End') nextIndex = tabs.length - 1;
+      else return;
+
+      event.preventDefault();
+      activateTab(tabs[nextIndex]);
+    });
+  });
+</script>
+
 </body>
 </html>
-
